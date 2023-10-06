@@ -1,4 +1,4 @@
-import {Document} from 'mongoose';
+import { Document } from 'mongoose';
 interface User extends Document {
   full_name: string;
   email: string;
@@ -12,4 +12,4 @@ interface OutputUser {
   email: string;
 }
 
-export {User, OutputUser};
+export { User, OutputUser };

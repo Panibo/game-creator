@@ -1,7 +1,7 @@
-import {Request, Response, NextFunction} from 'express';
+import { Request, Response, NextFunction } from 'express';
 import CustomError from '../../classes/CustomError';
-import {User} from '../../interfaces/User';
-import {validationResult} from 'express-validator';
+import { User } from '../../interfaces/User';
+import { validationResult } from 'express-validator';
 import userModel from '../models/userModel';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -24,9 +24,9 @@ const loginPost = async (
       return;
     }
 
-    const {email, password} = req.body;
+    const { email, password } = req.body;
 
-    const user = await userModel.findOne({email});
+    const user = await userModel.findOne({ email });
 
     if (!user) {
       next(new CustomError('Incorrect username/password', 403));
@@ -39,7 +39,7 @@ const loginPost = async (
     }
 
     const token = jwt.sign(
-      {id: user._id, role: user.role},
+      { id: user._id, role: user.role },
       process.env.JWT_SECRET as string
     );
 
@@ -59,4 +59,4 @@ const loginPost = async (
   }
 };
 
-export {loginPost};
+export { loginPost };
