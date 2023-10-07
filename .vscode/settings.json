@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/fefd49ea-7909-4544-832b-0c175be72fa0/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/game-creators-auth",
+    "appService.deploySubpath": "."
+}
