@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./dist",
+    "outDir": "./dist/src",
     "rootDir": "./src",
     "sourceMap": true,
     "target": "esnext",
@@ -13,7 +13,8 @@
   },
   "include": [
     "./*.js",
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "src/*.ts"
   ],
   "exclude": [
     "node_modules"
