@@ -5,13 +5,12 @@ import { validationResult } from 'express-validator';
 import userModel from '../models/userModel';
 import bcrypt from 'bcrypt';
 import DBMessageResponse from '../../interfaces/DBMessageResponse';
+import jwt from 'jsonwebtoken';
 
-// TODO: add function to check if the server is alive
 const check = (req: Request, res: Response) => {
   res.status(200).json({ message: 'Server is alive' });
 };
 
-// TODO: add function to get all users
 const userListGet = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const users = await userModel.find().select('-password -role -__v');
@@ -26,7 +25,6 @@ const userListGet = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-// TODO: add function to get a user by id
 const userGet = async (
   req: Request<{ id: string }, {}, {}>,
   res: Response,
@@ -53,7 +51,6 @@ const userGet = async (
   }
 };
 
-// TODO: add function to create a user
 const userPost = async (
   req: Request<{}, {}, User>,
   res: Response,
@@ -92,7 +89,6 @@ const userPost = async (
   }
 };
 
-// TODO: add function to update a user
 const userPut = async (
   req: Request<{ id: string }, {}, User>,
   res: Response,
@@ -115,7 +111,7 @@ const userPut = async (
   }
 };
 
-// TODO: add function to delete a user
+
 const userDelete = async (
   req: Request<{ id: string }, {}, {}>,
   res: Response,
@@ -137,10 +133,25 @@ const userDelete = async (
   }
 };
 
-// TODO: add function to check if a token is valid
+
 const checkToken = (req: Request, res: Response) => {
-  // TODO: Implement token validation logic here
-  res.status(200).json({ message: 'Token is valid' });
+  const token = req.headers['authorization'];
+
+  if (!token) {
+    return res.status(401).json({ message: 'Token is missing' });
+  }
+
+  try {
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET!) as jwt.JwtPayload;
+    const currentTimestamp = Math.floor(Date.now() / 1000);
+    if (decodedToken.exp && decodedToken.exp < currentTimestamp) {
+      res.status(401).json({ message: 'Token has expired' });
+    } else {
+      res.status(200).json({ message: 'Token is valid' });
+    }
+  } catch (error) {
+    res.status(401).json({ message: 'Token is invalid' });
+  }
 };
 
 export {

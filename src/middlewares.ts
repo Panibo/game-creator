@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {NextFunction, Request, Response} from 'express';
+import { NextFunction, Request, Response } from 'express';
 import ErrorResponse from './interfaces/ErrorResponse';
 import CustomError from './classes/CustomError';
 import jwt from 'jsonwebtoken';
-import {OutputUser} from './interfaces/User';
+import { OutputUser } from './interfaces/User';
 import userModel from './api/models/userModel';
 
 const notFound = (req: Request, res: Response, next: NextFunction) => {
@@ -35,15 +35,15 @@ const authenticate = async (
     // extract bearer token from header
     const bearerHeader = req.headers['authorization'];
     if (!bearerHeader || typeof bearerHeader === 'undefined') {
-      next(new CustomError('token not valid', 403));
+      next(new CustomError('token not valid a: ' + bearerHeader, 403));
       return;
     }
 
     // extract token from bearer token
     const bearer = bearerHeader.split(' ');
-    const token = bearer[1];
+    const token = bearer[0];
     if (!token) {
-      next(new CustomError('token not valid', 403));
+      next(new CustomError('token not valid b', 403));
       return;
     }
 
@@ -61,11 +61,11 @@ const authenticate = async (
       res.locals.user = user;
       next();
     } else {
-      next(new CustomError('token not valid', 403));
+      next(new CustomError('token not valid c', 403));
     }
   } catch (error) {
     next(new CustomError((error as Error).message, 400));
   }
 };
 
-export {notFound, errorHandler, authenticate};
+export { notFound, errorHandler, authenticate };
